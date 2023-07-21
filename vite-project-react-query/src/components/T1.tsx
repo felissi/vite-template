@@ -1,13 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
+import { ApiPaginatedMetaData } from '@/data/commonType'
 interface Props {
 
 }
-interface PlantsData {
-    count: number
-    next: string
-    previous: string | null
+interface PlantsData extends ApiPaginatedMetaData {
     results: Plant[]
-
 }
 interface Plant {
     "name": string
@@ -30,7 +27,7 @@ const fetchPlants = async () => {
     if (!res.ok) {
         throw new Error('Network response was not ok')
     }
-    return res.json()
+    return await res.json() as PlantsData
 }
 export default function T1() {
     const { data, isLoading, isError, isSuccess, error } = useQuery<PlantsData, string>(['plants'], fetchPlants)
