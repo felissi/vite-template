@@ -1,20 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
 import { ApiPaginatedMetaData } from '@/data/commonType'
-interface Props {
-
-}
+import { camelCase } from '@/data/keyCaseTransform.ts'
 interface PlantsData extends ApiPaginatedMetaData {
     results: Plant[]
 }
 interface Plant {
     "name": string
-    "rotation_period": number
-    "orbital_period": number
+    "rotationPeriod": number
+    "orbitalPeriod": number
     "diameter": number
     "climate": string
     "gravity": string
     "terrain": string
-    "surface_water": number
+    "surfaceWater": number
     "population": number
     "residents": string[]
     "films": string[]
@@ -27,10 +25,13 @@ const fetchPlants = async () => {
     if (!res.ok) {
         throw new Error('Network response was not ok')
     }
-    return await res.json() as PlantsData
+    const data = await res.json()
+    // console.log(data)
+    // console.log(camelCase(data))
+    return camelCase(data) as PlantsData
 }
 export default function T1() {
-    const { data, isLoading, isError, isSuccess, error } = useQuery<PlantsData, string>(['plants'], fetchPlants)
+    const { data, isLoading, isError, isSuccess, error } = useQuery(['plants'], fetchPlants)
     return (
         <div>
             <h2>Plants</h2>
@@ -40,12 +41,14 @@ export default function T1() {
             {isError && (
                 <div>{JSON.stringify(error)}</div>
             )}
-            {isSuccess && (
+            {isSuccess && data && (
                 <div>
                     <div>
+                        {JSON.stringify(data)}
                         {data.results.map(plant => (
                             <div key={plant.name}>{plant.name}</div>
                         ))}
+                        {data.results.map}
                     </div>
                 </div>
             )}

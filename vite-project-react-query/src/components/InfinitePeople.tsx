@@ -32,15 +32,15 @@ export function InfinitePeople() {
         ['people'],
         ({ pageParam = 'https://swapi.dev/api/people/?page=1' }: { pageParam?: string }) => fetchPage(pageParam),
         {
-            getNextPageParam: (lastPage: People, allPages: People[]) => lastPage.next,
-            getPreviousPageParam: (firstPage: People, allPages: People[]) => firstPage.previous,
+            getNextPageParam: (lastPage: People) => lastPage.next,
+            getPreviousPageParam: (firstPage: People) => firstPage.previous,
             cacheTime: 10 * 60 * 1000,
             staleTime: 5 * 60 * 1000
         })
     // if (data) const { pages, pageParams } = data
     if (data) {
         return (
-            <InfiniteScroll loadMore={fetchNextPage} hasMore={hasNextPage} >
+            <InfiniteScroll loadMore={() => { fetchNextPage }} hasMore={hasNextPage} >
                 <SomeRender pages={data.pages} />
             </InfiniteScroll >
         )
