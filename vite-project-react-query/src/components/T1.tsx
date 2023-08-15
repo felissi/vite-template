@@ -48,7 +48,7 @@ export default function T1() {
                         {data.results.map(plant => (
                             <div key={plant.name}>{plant.name}</div>
                         ))}
-                        {data.results.map}
+                        {/* {data.results.map} */}
                     </div>
                 </div>
             )}
